@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .chat-container {
+            height: 70vh;
+            overflow-y: auto;
+        }
+        .message {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 70%;
+        }
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: #e9ecef;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Chatbot</h1>
+        <div class="chat-container border rounded p-3 mb-3" id="chatContainer">
+            <!-- Messages Appended Here -->
+            {% if not chat_history %}
+                <p>No messages yet. Start chatting!</p>
+            {% else %}
+                {% for message in chat_history %}
+                    {% if message.type == 'human' %}
+                        <div class="message user-message">
+                            <strong>You:</strong> {{ message.content }}
+                        </div>
+                    {% elif message.type == 'ai' %}
+                        <div class="message bot-message">
+                            <strong>AI:</strong> {{ message.content }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+       <div class="input-group">
+            <form action="/chat" method="post">
+                <input type="text" id="userInput" name="user_prompt" placeholder="Enter your message..." autofocus required>
+                <button id="sendButton" class="btn btn-primary" type="submit">Send</button>
+            </form>
+       </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-scroll chatbox to the bottom
+        const chatContainer = document.getElementById('chatContainer');
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    </script>
+</body>
+</html> 
